@@ -83,8 +83,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'merge',
-        'USER': 'postgres',
-        'PASSWORD': 'svetlio22'
+        'USER': '(.)(.)',
+        'PASSWORD': '_/_'
     }
 }
 
