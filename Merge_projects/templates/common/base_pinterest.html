@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home - VanillaArt</title>
+    <script type="text/javascript"> (function () {
+        var css = document.createElement('link');
+        css.href = 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
+        css.rel = 'stylesheet';
+        css.type = 'text/css';
+        document.getElementsByTagName('head')[0].appendChild(css);
+    })(); </script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
+          rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+
+</head>
+
+<body>
+{#{% include 'common/navbar.html' %}#}
+{% include 'common/navbar_bulma.html' %}
+{% block content %}
+{% endblock %}
+{% include 'common/footer.html' %}
+</body>

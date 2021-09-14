@@ -1,0 +1,63 @@
+{#{% extends 'base.html' %}#}
+{% extends 'common/base_pinterest.html' %}
+
+{% load static %}
+
+{% block content %}
+    <style type="text/css">
+
+        .card-signin {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-signin input[type="username"] {
+            margin-bottom: 10px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: -1px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+
+    </style>
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="card card-signin">
+                <div class="card-body">
+                    <form class="form-signin" method="post">{% csrf_token %}
+                        <div class="d-flex flex-column pb-3">
+                            <img class="img-fluid mx-auto d-block"
+                                 src="{% static 'img/av.png' %}"
+                                 alt="coding" width="72" height="72">
+                        </div>
+                        <input type="username" name="username" id="input" class="form-control"
+                               placeholder="Username address" required autofocus>
+
+                        <input type="password" name="password" id="inputPassword" class="form-control"
+                               placeholder="Password" required>
+
+
+
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+                    </form>
+
+                    <div class="d-flex flex-column my-4">
+                        <a class="#" href="{% url 'password_reset' %}">Reset password</a>
+                    </div>
+                    <div class="d-flex flex-column my-4">
+                        <a class="#" href="{% url 'signup' %}">Create account</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

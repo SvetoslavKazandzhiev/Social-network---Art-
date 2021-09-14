@@ -1,0 +1,72 @@
+<div class="column">
+
+            <div style="overflow-y: scroll; height: 500px">
+
+                {% for direct in directs %}
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        {% if direct.user.profile.picture %}
+                                        <img class="rounded-circle mr-2" width="30"
+                                             src="{{ direct.user.profile.picture.url }}"
+                                             alt="Placeholder image">
+                                    {% else %}
+                                        <img src="https://bulma.io/images/placeholders/96x96.png"
+                                             alt="Placeholder image">
+                                    {% endif %}
+                                        <strong>{{ direct.sender.profile.first_name }} {{ direct.sender.profile.last_name }}</strong>
+                                        <small>@{{ direct.sender.username }}</small> on:
+                                        <strong><small>{{ direct.date|date:'N d G:i' }}</small></strong>
+                                    </p>
+                                    {{ direct.body }}
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+
+
+            <form role="form" method="POST" action="{% url 'send_direct' %}">
+                {% csrf_token %}
+                <article class="media">
+                    <figure class="media-left">
+                        <p class="image is-64x64">
+                            {% if request.user.profile.picture %}
+                                <a class="nav-link" href="{% url 'profile' request.user %}"><img
+                                        class="rounded-circle mr-2"
+                                        src="{{ request.user.profile.picture.url }}"
+                                        width="30" alt="8"><span class="align-middle">Author</span></a>
+                            {% else %}
+                                <a class="nav-link" href="{% url 'profile' request.user %}"><img
+                                        class="rounded-circle mr-2"
+                                        src="{% static 'img/av.png' %}"
+                                        width="30" alt="8"><span class="align-middle">Author</span></a>
+                            {% endif %}
+                        </p>
+                    </figure>
+                    <div class="media-content">
+                        <input type="hidden" name="to_user" value="{{ active_direct }}">
+                        <div class="field">
+                            <p class="control">
+                                <textarea class="textarea" name="body" placeholder="Add a comment..."></textarea>
+                            </p>
+                        </div>
+                        <nav class="level">
+                            <div class="level-left">
+                                <div class="level-item">
+                                    <button type="submit" name="action" class="btn btn-danger">Send</button>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </article>
+            </form>
+
+        </div>

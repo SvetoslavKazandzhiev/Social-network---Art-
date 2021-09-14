@@ -1,0 +1,207 @@
+{% load static %}
+<style type="text/css">
+   /* Dropdown Button */
+.dropbtn {
+  background-color: #bd081c;
+  color: white;
+  padding: 7px;
+  font-size: 12px;
+  border: none;
+    border-radius: 40%;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 100px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  z-index: 1;
+    right: 0;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: darkred;}
+
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+    <a class="navbar-brand font-weight-bolder mr-3" href="{% url 'landing' %}">
+        <img src="{% static  'img/logo.png' %}" alt="#"></a>
+    <button class="navbar-light navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsDefault"
+            aria-controls="navbarsDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsDefault">
+        <ul class="navbar-nav mr-auto align-items-center">
+
+            <form class="search-bar justify-content-start" onsubmit="return executeQuery();">
+                <input type="text" class="form-control" name="q" id="id_q_large" placeholder="Search...">
+            </form>
+            <li class="nav-item">
+                <a class="dropdown-item" href="{% url 'index' %}">
+                    <div class="btn-group dropleft">
+                        <div class="d-flex notifications-icon-container rounded-circle align-items-center mr-3"
+                             id="id_chat_notification_dropdown_toggle" data-toggle="dropdown">
+                            <span id="id_chat_notifications_count" class="notify-badge"></span>
+                            <span class="d-flex material-icons notifications-material-icon m-auto align-items-center">home</span>
+                            <div class="dropdown-menu scrollable-menu"
+                                 aria-labelledby="id_chat_notification_dropdown_toggle"
+                                 id="id_chat_notifications_container">
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto align-items-center">
+            <li class="nav-item">
+                <a class="dropdown-item" href="{% url 'inbox' %}">
+                    <div class="btn-group dropleft">
+                        <div class="d-flex notifications-icon-container rounded-circle align-items-center mr-3"
+                             id="id_chat_notification_dropdown_toggle" data-toggle="dropdown">
+                            <span id="id_chat_notifications_count" class="notify-badge"></span>
+                            <span class="d-flex material-icons notifications-material-icon m-auto align-items-center">chat</span>
+                            <div class="dropdown-menu scrollable-menu"
+                                 aria-labelledby="id_chat_notification_dropdown_toggle"
+                                 id="id_chat_notifications_container">
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="dropdown-item" href="{% url 'newstory' %}">
+                    <div class="btn-group dropleft">
+                        <div class="d-flex notifications-icon-container rounded-circle align-items-center mr-3"
+                             id="id_chat_notification_dropdown_toggle" data-toggle="dropdown">
+                            <span id="id_chat_notifications_count" class="notify-badge"></span>
+                            <span class="d-flex material-icons notifications-material-icon m-auto align-items-center">videocam</span>
+                            <div class="dropdown-menu scrollable-menu"
+                                 aria-labelledby="id_chat_notification_dropdown_toggle"
+                                 id="id_chat_notifications_container">
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="dropdown-item" href="{% url 'newpost' %}">
+                    <div class="btn-group dropleft">
+                        <div class="d-flex notifications-icon-container rounded-circle align-items-center mr-3"
+                             id="id_chat_notification_dropdown_toggle" data-toggle="dropdown">
+                            <span id="id_chat_notifications_count" class="notify-badge"></span>
+                            <span class="d-flex material-icons notifications-material-icon m-auto align-items-center">file_upload</span>
+                            <div class="dropdown-menu scrollable-menu"
+                                 aria-labelledby="id_chat_notification_dropdown_toggle"
+                                 id="id_chat_notifications_container">
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="dropdown-item" href="{% url 'show-notifications' %}">
+                    <div class="btn-group dropleft">
+                        <div class="d-flex notifications-icon-container rounded-circle align-items-center mr-3"
+                             id="id_chat_notification_dropdown_toggle" data-toggle="dropdown">
+                            <span id="id_chat_notifications_count" class="notify-badge"></span>
+                            <span class="d-flex material-icons notifications-material-icon m-auto align-items-center">notifications</span>
+                            <div class="dropdown-menu scrollable-menu"
+                                 aria-labelledby="id_chat_notification_dropdown_toggle"
+                                 id="id_chat_notifications_container">
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="nav-item">
+                {% if request.user.is_authenticated %}
+                    {% if request.user.profile.picture %}
+                        <a class="nav-link" href="{% url 'profile' request.user %}"><img class="rounded-circle mr-2"
+                                                                                         src="{{ request.user.profile.picture.url }}"
+                                                                                         width="30" alt="8"><span
+                                class="align-middle">Author</span></a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'profile' request.user %}"><img class="rounded-circle mr-2"
+                                                                                         src="{% static 'img/av.png' %}"
+                                                                                         width="30" alt="8"><span
+                                class="align-middle">Author</span></a>
+                    {% endif %}
+                {% else %}
+                    <a class="nav-link" href="{% url 'login' %}"><img class="rounded-circle mr-2"
+                                                                      src="{% static 'img/av.png' %}" width="30"
+                                                                      alt="8"><span
+                            class="align-middle">Author</span></a>
+                {% endif %}
+            </li>
+            <li class="nav-item dropdown">
+                <div class="dropdown">
+                    <button class="dropbtn">More</button>
+                    <div class="dropdown-content">
+                        <a href="#">Report</a>
+                        <a href="#">Contact</a>
+                        <a href="{% url 'logout' %}">Log out</a>
+                    </div>
+                </div>
+            </li>
+            {#            <li class="nav-item dropdown">#}
+            {#                <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true"#}
+            {#                   aria-expanded="false">#}
+            {#                    <svg style="margin-top:10px;" class="_3DJPT" version="1.1" viewbox="0 0 32 32" width="21"#}
+            {#                         height="21" aria-hidden="false" data-reactid="71">#}
+            {#                        <path d="M7 15.5c0 1.9-1.6 3.5-3.5 3.5s-3.5-1.6-3.5-3.5 1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5zm21.5-3.5c-1.9 0-3.5 1.6-3.5 3.5s1.6 3.5 3.5 3.5 3.5-1.6 3.5-3.5-1.6-3.5-3.5-3.5zm-12.5 0c-1.9 0-3.5 1.6-3.5 3.5s1.6 3.5 3.5 3.5 3.5-1.6 3.5-3.5-1.6-3.5-3.5-3.5z"#}
+            {#                              data-reactid="22"></path>#}
+            {#                    </svg>#}
+            {#                </a>#}
+            {#                <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="dropdown02">#}
+            {#                    <h4 class="dropdown-header display-4"><a href="{% url 'signup' %}">Sign Up</a><br/> Sign In</h4>#}
+            {#                    <div class="dropdown-divider">#}
+            {#                    </div>#}
+            {#                    <span class="dropdown-item"><a#}
+            {#                            href="{% url 'logout' %}"#}
+            {#                            class="btn btn-primary d-block"><i class="fa fa-download"></i> Log Out</a></span>#}
+            {#                </div>#}
+            {#            </li>#}
+        </ul>
+
+    </div>
+</nav>
+
+{#<script type="text/javascript">#}
+{##}
+{##}
+{#	function executeQuery() {#}
+{#		var query = ""#}
+{#		query = document.getElementById('id_q_small').value;#}
+{#		if (query == ""){#}
+{#			query = document.getElementById('id_q_large').value;#}
+{#		}#}
+{#	    window.location.replace("{% url 'search' %}?q=" + query)#}
+{#	    return false#}
+{#	}#}
+{##}
+{##}
+{#</script>#}

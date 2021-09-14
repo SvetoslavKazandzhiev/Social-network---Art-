@@ -1,0 +1,280 @@
+{% extends 'common/base_pinterest.html' %}
+{##}
+{#{% load static %}#}
+{##}
+{#{% block content %}#}
+{##}
+{#<article class="media">#}
+{##}
+{#  <div class="media-left">#}
+{#      <figure class="image is-256x256">#}
+{#        {% if profile.picture %}#}
+{#          <img class="is-rounded" src="{{ profile.picture.url }}">#}
+{#        {% else %}#}
+{#          <img class="is-rounded" src="/Merge_projects/static/img/av.png">#}
+{#        {% endif %}#}
+{#      </figure>#}
+{#  </div>#}
+{##}
+{#   <div class="media-content">#}
+{##}
+{#    <div class="content">#}
+{#      <h1 style="font-weight: bold;" class="title is-1">{% if profile.first_name %}{{ profile.first_name }} {{ profile.last_name }} {% endif %}</h1>#}
+{#      <h2 class="subtitle is-3">@{{ profile.user }}</h2>#}
+{##}
+{#    {% if user.is_authenticated and user != profile.user %}#}
+{#      <div class="media-right">#}
+{#        {% if follow_status == True %}#}
+{#          <a href="{% url 'follow' profile.user 0 %}" class="button is-danger">Unfollow</a>#}
+{#        {% else %}#}
+{#          <a href="{% url 'follow' profile.user 1 %}" class="button is-success">Follow</a>#}
+{#        {% endif  %}#}
+{#      </div>#}
+{#    {% endif %}#}
+{##}
+{#    </div>#}
+{##}
+{##}
+{#     <nav class="level is-mobile">#}
+{#  <div class="level-item has-text-centered">#}
+{#    <div>#}
+{#      <p class="heading">Posts</p>#}
+{#      <p class="title">{{ posts_count }}</p>#}
+{#    </div>#}
+{#  </div>#}
+{#  <div class="level-item has-text-centered">#}
+{#    <div>#}
+{#      <p class="heading">Following</p>#}
+{#      <p class="title">{{ following_count }}</p>#}
+{#    </div>#}
+{#  </div>#}
+{#  <div class="level-item has-text-centered">#}
+{#    <div>#}
+{#      <p class="heading">Followers</p>#}
+{#      <p class="title">{{ followers_count }}</p>#}
+{#    </div>#}
+{#  </div>#}
+{#</nav>#}
+{##}
+{#<p class="subtitle is-5">{% if profile.profile_info %}{{ profile.profile_info }}{% endif %}</p>#}
+{##}
+{#{% if user.is_authenticated and user == profile.user %}#}
+{#  <a href="{% url 'edit-profile' %}" class="button">Edit profile</a>#}
+{#{% endif %}#}
+{##}
+{# </div>#}
+{##}
+{#</article>#}
+{##}
+{##}
+{#</div>#}
+{#</div>#}
+{##}
+{##}
+{##}
+{#    </div>#}
+{#  </section>#}
+{% load static %}
+
+{% block content %}
+
+    <style type="text/css">
+        .image-container {
+            max-width: 250px;
+            height: auto;
+        }
+
+        .field-heading {
+            color: var(--secondary-text-color);
+        }
+
+        .icon-container:hover {
+            opacity: 0.3;
+            cursor: pointer;
+        }
+
+        .friends-icon {
+            color: #4287f5;
+            font-size: 40px;
+        }
+
+        .person-add-icon {
+            color: #4287f5;
+            font-size: 40px;
+        }
+
+        .friend-text {
+            font-weight: 500;
+            color: black;
+        }
+
+        .friends-btn {
+            background-color: #cccccc;
+            border-color: #cccccc;
+            color: #000;
+            font-weight: 500;
+        }
+
+        .friends-btn:hover {
+            background-color: #bfbfbf;
+            border-color: #bfbfbf;
+        }
+
+        .dropdown-toggle::after {
+            content: none;
+        }
+
+        .card {
+            border-radius: 12px;
+        }
+
+        .material-icons {
+            font-size: 30px;
+        }
+
+        .material-icons:hover {
+            cursor: pointer;
+        }
+
+        .confirm-friend-request {
+            color: green;
+        }
+
+        .confirm-friend-request:hover {
+            opacity: 0.3;
+        }
+
+        .decline-friend-request:hover {
+            opacity: 0.3;
+        }
+
+        .decline-friend-request {
+            color: red;
+        }
+
+        .message-btn-text {
+            font-weight: 500;
+        }
+    </style>
+
+    <div class="container-fluid">
+        <div class="d-flex flex-row justify-content-center flex-wrap align-items-start">
+            <div class="card profile-card m-2">
+                <div class="card-body">
+                    <div>
+                        <div class="level-item has-text-centered" style="display: inline-block; margin-right: 35px;">
+                            <div>
+                                <p class="heading">Posts</p>
+                                <p class="title">{{ posts_count }}</p>
+                            </div>
+                        </div>
+                        <div class="level-item has-text-centered" style="display: inline-block; margin-right: 25px;">
+                            <div>
+                                <p class="heading">Following</p>
+                                <p class="title">{{ following_count }}</p>
+                            </div>
+                        </div>
+                        <div class="level-item has-text-centered" style="display: inline-block">
+                            <div>
+                                <p class="heading">Followers</p>
+                                <p class="title">{{ followers_count }}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column justify-content-center p-4">
+                            <div class="image-container mx-auto mb-4">
+                                {% if profile.picture %}
+                                    <img class="is-rounded" src="{{ profile.picture.url }}">
+                                {% else %}
+                                    <img class="is-rounded" src="{% static 'img/av.png'%}" alt="#">
+                                {% endif %}
+                            </div>
+                            <p class="mt-4 mb-1 field-heading">Name</p>
+                            <h5 style="font-weight: bold;" class="title is-1">
+                                {% if profile.first_name %}{{ profile.first_name }}
+                                    {{ profile.last_name }} {% endif %}</h5>
+                            <p class="mt-4 mb-1 field-heading">Username</p>
+                            <h3>{{ profile.user }}</h3>
+
+                            <!-- If Auth user is viewing their own profile -->
+                            {% if user.is_authenticated and user == profile.user %}
+                                <a href="{% url 'edit-profile' %}" class="mt-4 btn btn-primary">Edit profile</a>
+                                <a class="mt-4 btn btn-outline-primary" href="{% url 'change_password' %}">Change
+                                    password</a>
+                            {% endif %}
+
+                            {% if user.is_authenticated and user != profile.user %}
+                                <div class="media-right">
+                                    {% if follow_status == True %}
+                                        <a href="{% url 'follow' profile.user 0 %}"
+                                           class="mt-4 btn btn-primary">Unfollow</a>
+                                    {% else %}
+                                        <a href="{% url 'follow' profile.user 1 %}"
+                                           class="mt-4 btn btn-primary">Follow</a>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+
+    <section class="section">
+        <div class="container">
+
+            <div class="tabs is-centered">
+                <ul>
+                    <li class="{% if url_name == 'profile' %}is-active{% endif %}">
+                        <a href="{% url 'profile' profile.user %}"><i class="material-icons"></i>Posts</a>
+                    </li>
+
+                    <li class="{% if url_name == 'profilefavorites' %}is-active{% endif %}">
+                        <a href="{% url 'profilefavorites' profile.user %}"><i class="material-icons"></i>Saved</a>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="columns is-mobile is-multiline is-centered">
+
+                {% for post in posts %}
+                    <div class="column is-one-quarter">
+                        <div class="box">
+
+                            {% if post.content.first.file.name|slice:"-3:" == 'jpg' or post_item.content.first.file.name|slice:"-3:" == 'png' %}
+                                <figure class="image is-4by3">
+                                    <a href="{{ post.get_absolute_url }}">
+                                        <img src="{{ post.content.first.file.url }}" alt="Placeholder image">
+                                    </a>
+                                </figure>
+                            {% else %}
+                                <a href="{{ post.get_absolute_url }}">
+                                    <video width="640" controls="controls" preload="metadata">
+                                        <source src="{{ post.content.first.file.url }}#t=0.5" type="video/mp4">
+                                    </video>
+                                </a>
+                            {% endif %}
+
+
+                        </div>
+                    </div>
+                {% empty %}
+                    <br>
+                    <h3 class="title is-3">You do not have any post!</h3>
+                {% endfor %}
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+{% endblock %}
